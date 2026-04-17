@@ -113,7 +113,7 @@ For example, Cardiology and Gastroenterology are both assigned the Medical Speci
 The individual specialty assignments are our best approximation given what AAMC publishes.
 The HRSA HPSA data (Step 1.1) provides the facility-level detail that compensates for this limitation.
 
-See also: [docs/aamc_data_source.md](aamc_data_source.md) for full technical source notes.
+See also: [aamc_data_source.md](aamc_data_source.md) for full technical source notes.
 
 ---
 

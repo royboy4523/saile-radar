@@ -10,8 +10,10 @@ Built by Rajeev as a summer project during Operations Internship at Saile.
 
 If you are a business stakeholder, manager, or anyone without a technical background:
 
-- **[docs/data_notes.md](docs/data_notes.md)** — Start here. Plain-English explanations of every data source used, known gaps, and what they mean for interpreting results.
-- **[docs/aamc_data_source.md](docs/aamc_data_source.md)** — Detailed source notes for the AAMC physician shortage projections.
+- **[docs/data_notes/overview.md](docs/data_notes/overview.md)** — Start here. Plain-English explanations of every data source used, known gaps, and what they mean for interpreting results.
+- **[docs/data_notes/aamc_data_source.md](docs/data_notes/aamc_data_source.md)** — Detailed source notes for the AAMC physician shortage projections.
+
+All data collection notes, workarounds, and limitations live in **[docs/data_notes/](docs/data_notes/)**.
 
 ---
 
