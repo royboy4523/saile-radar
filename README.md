@@ -13,3 +13,6 @@ pip install -r requirements.txt
 
 ## Project Structure
 See CLAUDE.md for full details.
+
+## Data Notes
+See [docs/data_notes.md](docs/data_notes.md) for plain-English explanations of each data source, known gaps, and what they mean for interpreting results. Start here if you are not a technical reader.
