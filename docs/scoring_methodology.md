@@ -163,35 +163,58 @@ After scoring, facilities are ranked by composite score descending.
 Only **nonprofit** facilities advance to Stage 2 (for-profit and government
 are excluded — Saile's model targets nonprofits that hire locums directly).
 
-**Threshold set:** `composite_score >= 0.8346`
-**Stage 2 candidates:** 548 nonprofit facilities
-**Score range within Stage 2:** 0.8346 – 0.8884
+**Threshold set:** `composite_score >= 0.6895`
+**Stage 2 candidates:** 566 nonprofit hospital-type facilities
+**Score range within Stage 2:** 0.6895 – 0.8500
+
+### Eligibility filter (added during Phase 3)
+
+During Phase 3 implementation it was discovered that the initial Stage 2 list
+was dominated by ICF-IID facilities (Intermediate Care Facilities for Individuals
+with Intellectual/Developmental Disabilities) — CMS category 11. These are
+residential group homes staffed by direct-care workers, not physicians, and are
+not locum tenens targets for Saile.
+
+Stage 2 eligibility was corrected to require:
+- `ownership_type == "nonprofit"`
+- `provider_category` in `{"01", "03", "04", "05", "06"}` — actual physician-employing hospitals
+
+CMS categories excluded:
+- **11** (ICF-IID): Residential group homes for people with intellectual/developmental disabilities
+- **02** (SNF/LTC): Skilled nursing and long-term care facilities (limited locum tenens applicability)
 
 ### How the threshold was chosen
 
 The `set_stage2_threshold()` function in `src/scoring/model.py` selects the
-cutoff that places the target number of nonprofits in the Stage 2 list.
+cutoff from the eligible pool of 4,370 nonprofit hospital-type facilities.
 Target was the midpoint of the planner range (500 facilities); the function
-found that a score of 0.8346 produces 548 facilities — within the 200–800 target.
+found that a score of 0.6895 produces 566 facilities — within the 200–800 target.
+
+### Stage 2 composition
+
+| CMS Category | Facility Type | Count |
+|---|---|---|
+| 01 | Acute care hospitals | 468 |
+| 06 | Chronic disease hospitals | 79 |
+| 03 | Psychiatric hospitals | 13 |
+| 04 | Rehabilitation hospitals | 6 |
 
 ### Stage 2 geographic distribution (top 10 states)
 
 | State | Facilities |
 |-------|-----------|
-| CA | 241 |
-| TX | 62 |
-| OH | 44 |
-| NC | 39 |
-| MO | 17 |
-| NM | 16 |
-| IL | 15 |
-| MS | 13 |
-| WV | 11 |
-| IN | 11 |
+| CA | 72 |
+| TX | 48 |
+| PA | 34 |
+| WI | 24 |
+| IA | 22 |
+| KY | 22 |
+| PR | 19 |
+| CO | 19 |
+| AZ | 18 |
+| NY | 18 |
 
-28 states represented. California's large count reflects the high density of
-nonprofit facilities in counties with HPSA designations (Central Valley in
-particular has HPSA scores of 24–26).
+44 states represented.
 
 **Output file:** `data/processed/stage2_candidates.parquet`
 

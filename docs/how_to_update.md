@@ -27,12 +27,20 @@ Run these scripts in order from the project root. Each one overwrites its output
 cd ~/Projects/saile-radar
 source venv/bin/activate
 
-python src/ingest/hrsa.py        # Step 1.1 — re-downloads HRSA HPSA data
-python src/ingest/cms.py         # Step 1.2 — re-downloads CMS facility list
-python src/ingest/bls.py         # Step 1.3 — re-downloads BLS employment data
-python src/ingest/unify.py       # Step 1.5 — rebuilds unified facility dataframe
-python src/scoring/model.py      # Phase 2  — re-scores all facilities, re-sets threshold
+python src/ingest/hrsa.py              # Step 1.1 — re-downloads HRSA HPSA data
+python src/ingest/cms.py               # Step 1.2 — re-downloads CMS facility list
+python src/ingest/bls.py               # Step 1.3 — re-downloads BLS employment data
+python src/ingest/unify.py             # Step 1.5 — rebuilds unified facility dataframe
+python src/scoring/model.py            # Phase 2  — re-scores all facilities, re-sets threshold
+python src/crosswalk/ein_matcher.py    # Phase 3a — re-matches hospitals to IRS EINs
+PYTHONPATH=. python src/vms/classifier.py  # Phase 3b — re-classifies VMS vs direct hire
 ```
+
+**Note on Phase 3 caching:** The EIN crosswalk caches ProPublica search results in
+`data/raw/propublica_search/`. If you want to re-query ProPublica (e.g., after a data
+update), delete this folder before running `ein_matcher.py`. Otherwise it uses cached results.
+
+The ProPublica organization API caches in `data/raw/propublica/`. Same rule applies.
 
 After running, check the log output from each script for:
 - Row counts (should be similar to previous run, or higher if new facilities added)
@@ -111,7 +119,9 @@ If the HRSA download script stops working (e.g., the URL changes):
 | `src/ingest/cms.py` | Downloads the master list of all US hospitals. Flags ownership type. | `data/processed/cms_pos_clean.parquet` |
 | `src/ingest/bls.py` | Downloads healthcare employment data by metro area. Calculates density. | `data/processed/bls_oes_clean.parquet` |
 | `src/ingest/unify.py` | Joins all four datasets into one table (one row per hospital). | `data/processed/unified_facilities.parquet` |
-| `src/scoring/model.py` | Scores every facility. Identifies Stage 2 candidates. | `data/processed/scored_facilities.parquet`, `data/processed/stage2_candidates.parquet` |
+| `src/scoring/model.py` | Scores every facility. Identifies Stage 2 candidates (566 nonprofit hospitals). | `data/processed/scored_facilities.parquet`, `data/processed/stage2_candidates.parquet` |
+| `src/crosswalk/ein_matcher.py` | Matches each Stage 2 hospital to its IRS EIN via ProPublica search + BMF fuzzy match. | `data/processed/facility_ein_crosswalk.parquet` |
+| `src/vms/classifier.py` | Pulls 990 expense data for matched EINs. Classifies hospitals as direct_hire / likely_vms / uncertain. | `data/processed/facilities_final.parquet` |
 
 ---
 
