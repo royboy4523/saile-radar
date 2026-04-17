@@ -160,8 +160,40 @@ would add signal but require a separate data pull; left for a future iteration.
 ## Stage 2 Threshold
 
 After scoring, facilities are ranked by composite score descending.
-A threshold will be set in Step 2.3 to define "Stage 2 candidates"
-— the subset that advances to the VMS filter in Phase 3.
+Only **nonprofit** facilities advance to Stage 2 (for-profit and government
+are excluded — Saile's model targets nonprofits that hire locums directly).
+
+**Threshold set:** `composite_score >= 0.8346`
+**Stage 2 candidates:** 548 nonprofit facilities
+**Score range within Stage 2:** 0.8346 – 0.8884
+
+### How the threshold was chosen
+
+The `set_stage2_threshold()` function in `src/scoring/model.py` selects the
+cutoff that places the target number of nonprofits in the Stage 2 list.
+Target was the midpoint of the planner range (500 facilities); the function
+found that a score of 0.8346 produces 548 facilities — within the 200–800 target.
+
+### Stage 2 geographic distribution (top 10 states)
+
+| State | Facilities |
+|-------|-----------|
+| CA | 241 |
+| TX | 62 |
+| OH | 44 |
+| NC | 39 |
+| MO | 17 |
+| NM | 16 |
+| IL | 15 |
+| MS | 13 |
+| WV | 11 |
+| IN | 11 |
+
+28 states represented. California's large count reflects the high density of
+nonprofit facilities in counties with HPSA designations (Central Valley in
+particular has HPSA scores of 24–26).
+
+**Output file:** `data/processed/stage2_candidates.parquet`
 
 Target size: 200–800 facilities (per planner guidance).
 
