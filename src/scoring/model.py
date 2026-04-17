@@ -49,6 +49,11 @@ AAMC_NORMALIZED = {
 
 HPSA_MAX = 26.0  # HPSA scores range 0–26
 
+# CMS provider categories that represent actual physician-employing facilities.
+# Excluded: category 11 (ICF-IID — group homes for people with intellectual/developmental
+# disabilities, not locum tenens targets) and category 02 (SNF/LTC — nursing homes).
+HOSPITAL_ELIGIBLE_CATEGORIES = {"01", "03", "04", "05", "06"}
+
 
 def compute_hpsa_component(df: pd.DataFrame) -> pd.Series:
     """Min-max normalization: hpsa_score_max / 26. Null → 0."""
@@ -140,25 +145,32 @@ def validate(df: pd.DataFrame) -> None:
 def set_stage2_threshold(df: pd.DataFrame, target_low: int = 200, target_high: int = 800) -> float:
     """
     Find the composite_score threshold that yields target_low–target_high
-    nonprofit facilities for Stage 2. Returns the threshold.
+    Stage 2 eligible nonprofit hospital facilities. Returns the threshold.
+
+    Stage 2 eligibility requires:
+    - ownership_type == "nonprofit"
+    - provider_category in HOSPITAL_ELIGIBLE_CATEGORIES (actual physician-employing facilities)
     """
-    nonprofit = df[df["ownership_type"] == "nonprofit"].copy()
-    nonprofit_sorted = nonprofit.sort_values("composite_score", ascending=False)
+    eligible = df[
+        (df["ownership_type"] == "nonprofit") &
+        (df["provider_category"].isin(HOSPITAL_ELIGIBLE_CATEGORIES))
+    ].copy()
+    eligible_sorted = eligible.sort_values("composite_score", ascending=False)
 
-    # Binary search for a threshold that puts count in [target_low, target_high]
-    # Use midpoint of the range as the target
-    target = (target_low + target_high) // 2  # 500
+    log.info(f"\nStage 2 eligible pool: {len(eligible):,} nonprofit hospital-type facilities")
 
-    if len(nonprofit_sorted) <= target_high:
-        threshold = nonprofit_sorted["composite_score"].min()
-        log.info(f"All {len(nonprofit_sorted):,} nonprofits fit within Stage 2 target range — threshold = {threshold:.4f}")
+    target = (target_low + target_high) // 2  # midpoint = 500
+
+    if len(eligible_sorted) <= target_high:
+        threshold = eligible_sorted["composite_score"].min()
+        log.info(f"All eligible nonprofits fit within target range — threshold = {threshold:.4f}")
         return threshold
 
-    cutoff_score = nonprofit_sorted.iloc[target - 1]["composite_score"]
-    actual_count = (nonprofit["composite_score"] >= cutoff_score).sum()
-    log.info(f"\nStage 2 threshold: composite_score >= {cutoff_score:.4f}")
-    log.info(f"  Targets {target:,} nonprofits; actual count at threshold: {actual_count:,}")
-    log.info(f"  (Target range was {target_low:,}–{target_high:,})")
+    cutoff_score = eligible_sorted.iloc[target - 1]["composite_score"]
+    actual_count = (eligible["composite_score"] >= cutoff_score).sum()
+    log.info(f"Stage 2 threshold: composite_score >= {cutoff_score:.4f}")
+    log.info(f"  Targets {target:,}; actual count at threshold: {actual_count:,}")
+    log.info(f"  (Target range: {target_low:,}–{target_high:,})")
     return cutoff_score
 
 
@@ -182,6 +194,7 @@ def main():
     df_scored["is_stage2_candidate"] = (
         (df_scored["composite_score"] >= threshold)
         & (df_scored["ownership_type"] == "nonprofit")
+        & (df_scored["provider_category"].isin(HOSPITAL_ELIGIBLE_CATEGORIES))
     )
     stage2_count = df_scored["is_stage2_candidate"].sum()
     log.info(f"\nStage 2 candidates flagged: {stage2_count:,}")
