@@ -1,0 +1,32 @@
+specialty_name,aamc_category,shortfall_low,shortfall_high,projection_year,data_source
+Family Medicine,Primary Care,20200,40400,2036,Exhibit 35 - AAMC 2023 Report
+Internal Medicine,Primary Care,20200,40400,2036,Exhibit 35 - AAMC 2023 Report
+Pediatrics,Primary Care,20200,40400,2036,Exhibit 35 - AAMC 2023 Report
+Geriatric Medicine,Primary Care,20200,40400,2036,Exhibit 35 - AAMC 2023 Report
+OB/GYN (Primary Care),Primary Care,20200,40400,2036,Exhibit 35 - AAMC 2023 Report
+Hospitalist,Hospitalist,-4900,1300,2036,Exhibit 35 - AAMC 2023 Report
+Cardiology,Medical Specialties,-3700,5500,2036,Exhibit 35 - AAMC 2023 Report
+Gastroenterology,Medical Specialties,-3700,5500,2036,Exhibit 35 - AAMC 2023 Report
+Endocrinology,Medical Specialties,-3700,5500,2036,Exhibit 35 - AAMC 2023 Report
+Nephrology,Medical Specialties,-3700,5500,2036,Exhibit 35 - AAMC 2023 Report
+Neurology,Medical Specialties,-3700,5500,2036,Exhibit 35 - AAMC 2023 Report
+Pulmonology/Critical Care,Medical Specialties,-3700,5500,2036,Exhibit 35 - AAMC 2023 Report
+Rheumatology,Medical Specialties,-3700,5500,2036,Exhibit 35 - AAMC 2023 Report
+Oncology/Hematology,Medical Specialties,-3700,5500,2036,Exhibit 35 - AAMC 2023 Report
+Infectious Disease,Medical Specialties,-3700,5500,2036,Exhibit 35 - AAMC 2023 Report
+General Surgery,Surgical Specialties,10100,19900,2036,Exhibit 35 - AAMC 2023 Report
+Orthopedic Surgery,Surgical Specialties,10100,19900,2036,Exhibit 35 - AAMC 2023 Report
+Urology,Surgical Specialties,10100,19900,2036,Exhibit 35 - AAMC 2023 Report
+Ophthalmology,Surgical Specialties,10100,19900,2036,Exhibit 35 - AAMC 2023 Report
+Neurosurgery,Surgical Specialties,10100,19900,2036,Exhibit 35 - AAMC 2023 Report
+Vascular Surgery,Surgical Specialties,10100,19900,2036,Exhibit 35 - AAMC 2023 Report
+Plastic Surgery,Surgical Specialties,10100,19900,2036,Exhibit 35 - AAMC 2023 Report
+Thoracic Surgery,Surgical Specialties,10100,19900,2036,Exhibit 35 - AAMC 2023 Report
+Colorectal Surgery,Surgical Specialties,10100,19900,2036,Exhibit 35 - AAMC 2023 Report
+Psychiatry,Other Specialties,-4300,19500,2036,Exhibit 35 - AAMC 2023 Report
+Radiology,Other Specialties,-4300,19500,2036,Exhibit 35 - AAMC 2023 Report
+Anesthesiology,Other Specialties,-4300,19500,2036,Exhibit 35 - AAMC 2023 Report
+Emergency Medicine,Other Specialties,-4300,19500,2036,Exhibit 35 - AAMC 2023 Report
+Dermatology,Other Specialties,-4300,19500,2036,Exhibit 35 - AAMC 2023 Report
+Pathology,Other Specialties,-4300,19500,2036,Exhibit 35 - AAMC 2023 Report
+Physical Medicine and Rehab,Other Specialties,-4300,19500,2036,Exhibit 35 - AAMC 2023 Report
